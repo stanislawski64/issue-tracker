@@ -1,24 +1,30 @@
 import Toolbar from './Toolbar';
 import SideMenu from './SideMenu';
+import Backdrop from './Backdrop';
 import Aux from './Auxiliary';
-import { useState, useEffect } from 'react';
 
 function ToolbarSideMenuContainer() {
-  const [isDesktop, setDesktop] = useState(window.innerWidth > 1280);
+  function toggleBackdrop() {
+    const Backdrop = document.getElementsByClassName('Backdrop')[0];
+    Backdrop.classList.toggle('visible');
+  }
 
-  const updateMedia = () => {
-    setDesktop(window.innerWidth > 1280);
-  };
-
-  useEffect(() => {
-    window.addEventListener('resize', updateMedia);
-    return () => window.removeEventListener('resize', updateMedia);
-  });
+  function toggleSideMenu() {
+    const SideMenu = document.getElementsByClassName('SideMenu')[0];
+    SideMenu.classList.toggle('translated');
+    SideMenu.classList.toggle('visible');
+    SideMenu.classList.add('transition');
+    setTimeout(function () {
+      SideMenu.classList.remove('transition');
+    }, 225);
+    toggleBackdrop();
+  }
 
   return (
     <Aux>
-      <Toolbar renderSideMenuButton={!isDesktop} />
-      {isDesktop ? <SideMenu /> : null}
+      <Backdrop toggleSideMenu={toggleSideMenu} />
+      <Toolbar toggleSideMenu={toggleSideMenu} />
+      <SideMenu />
     </Aux>
   );
 }

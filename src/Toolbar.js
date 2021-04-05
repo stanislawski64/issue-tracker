@@ -1,49 +1,69 @@
-import { useState } from 'react';
-import { ReactComponent as MenuIcon } from './MenuIcon.svg';
-import { ReactComponent as AccountIcon } from './AccountIcon.svg';
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import ToolbarButtons from './ToolbarButtons';
 
-function Toolbar({ renderSideMenuButton }) {
+function Toolbar({ toggleSideMenu }) {
   const [open, setOpen] = useState(false);
 
-  const showMenu = (e) => {
-    e.preventDefault();
-    setOpen(true);
-  };
+  let menuRef = useRef();
 
-  const hide = (e) => {
-    if (e && e.relatedTarget) {
-      e.relatedTarget.click();
+  useEffect(() => {
+    let ListenerFunction = (event) => {
+      if (!menuRef.current.contains(event.target)) setOpen(false);
+    };
+    document.addEventListener('mousedown', ListenerFunction);
+    return () => {
+      document.removeEventListener('mousedown', ListenerFunction);
+    };
+  });
+
+  const [theme, setTheme] = useState(localStorage.getItem('theme'));
+
+  useEffect(() => {
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+    } else {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
     }
-    console.log(e);
-    setOpen(false);
-  };
+  }, [theme]);
+
+  useEffect(() => {
+    document.documentElement.addEventListener('transitionend', () => {
+      document.documentElement.classList.remove('mode-transition');
+    });
+  }, []);
+
+  function toggleNightMode() {
+    if (theme === 'light') {
+      setTheme('dark');
+      document.documentElement.classList.add('mode-transition');
+    } else {
+      setTheme('light');
+      document.documentElement.classList.add('mode-transition');
+    }
+  }
 
   return (
-    <header className="Toolbar">
-      <button
-        id="AccountButton"
-        onBlur={(e) => hide(e)}
-        onClick={(e) => showMenu(e)}
-        className="ToolbarButton"
+    <header className="Toolbar" id="Toolbar">
+      <ToolbarButtons
+        toggleSideMenu={toggleSideMenu}
+        toggleNightMode={toggleNightMode}
+        setOpen={setOpen}
+      />
+      <div
+        className="Menu"
+        ref={menuRef}
+        style={!open ? { display: 'none' } : null}
       >
-        <AccountIcon fill="white" />
-      </button>
-      {renderSideMenuButton && (
-        <button id="MenuButton" className="ToolbarButton">
-          <MenuIcon fill="white" />
-        </button>
-      )}
-
-      {open && (
-        <div className="Menu">
-          <a href="#" className="MenuItem">
-            Log In
-          </a>
-          <a href="#" className="MenuItem">
-            Register
-          </a>
-        </div>
-      )}
+        <Link to="/login" className="MenuItem">
+          Log In
+        </Link>
+        <Link to="/register" className="MenuItem">
+          Register
+        </Link>
+      </div>
     </header>
   );
 }
