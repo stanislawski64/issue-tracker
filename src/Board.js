@@ -1,10 +1,11 @@
 function Board() {
   return (
-    <div className="ContentContainer">
-      <main className="MainContent">
-        BOARD BOARD BOARD BOARD BOARD BOARD BOARD BOARD BOARD BOARD BOARD
-      </main>
-    </div>
+    <main className="MainContent">
+      <div className="BoardDiv"></div>
+      <div className="BoardDiv"></div>
+      <div className="BoardDiv"></div>
+      <div className="BoardDiv"></div>
+    </main>
   );
 }
 

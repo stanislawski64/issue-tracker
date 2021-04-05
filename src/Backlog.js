@@ -1,11 +1,5 @@
 function Backlog() {
-  return (
-    <div className="ContentContainer">
-      <main className="MainContent">
-        BACKLOG BACKLOG BACKLOG BACKLOG BACKLOG BACKLOG BACKLOG BACKLOG BACKLOG
-      </main>
-    </div>
-  );
+  return <main className="MainContent">BACKLOG</main>;
 }
 
 export default Backlog;

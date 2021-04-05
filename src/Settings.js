@@ -1,11 +1,5 @@
 function Settings() {
-  return (
-    <div className="ContentContainer">
-      <main className="MainContent">
-        SETTINGS SETTINGS SETTINGS SETTINGS SETTINGS SETTINGS SETTINGS SETTINGS
-      </main>
-    </div>
-  );
+  return <main className="MainContent">SETTINGS</main>;
 }
 
 export default Settings;
