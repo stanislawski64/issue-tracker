@@ -16,8 +16,8 @@ html {
   --form-label-color: rgba(0, 0, 0, 0.54);
   --divider: rgba(0, 0, 0, 0.12);
   --fieldset-border-color: rgba(0, 0, 0, 0.23);
-  --board-div-width: 300px;
-  --board-div-margin: 20px;
+  --board-div-color: rgb(231, 231, 231);
+  --issue-background-color: rgb(250, 250, 250);
 }
 html[data-theme='dark'] {
   --bg: #181818;
@@ -29,6 +29,8 @@ html[data-theme='dark'] {
   --side-menu-fill: #1976d2;
   --form-label-color: rgba(255, 255, 255, 0.54);
   --fieldset-border-color: rgba(255, 255, 255, 0.23);
+  --board-div-color: rgb(54, 54, 54);
+  --issue-background-color: rgba(255, 255, 255, 0.2);
 }
 html.mode-transition,
 html.mode-transition *,
@@ -148,10 +150,11 @@ html.mode-transition path {
 }
 .Backdrop {
   background-color: rgba(0, 0, 0, 0.4);
-  z-index: 1100;
+  z-index: 1000;
   position: absolute;
-  width: 100%;
+  left: 0px;
   height: calc(100vh - 64px);
+  width: 100vw;
   visibility: hidden;
 }
 .SiteNameDiv {
@@ -223,10 +226,8 @@ html.mode-transition path {
 
 .ContentContainer {
   background-color: var(--bg);
-  display: flex;
-  width: calc(var(--board-div-width) * 4 + var(--board-div-margin) * 3);
-  min-width: calc(100vw - 240px);
   height: calc(100vh - 64px);
+  width: calc(100vw - 240px);
   margin-left: 240px;
   margin-top: 64px;
 }
@@ -237,23 +238,62 @@ html.mode-transition path {
   color: var(--color); /*póki co tam tekst, ale kiedyś będzie trzeba to usunąć*/
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif; /*to samo co wyżej*/
 }
+.Board {
+  max-height: 100%;
+  overflow: auto;
+  flex: 1 1 0%;
+  position: relative;
+}
 .MainContentForm {
   display: flex;
   justify-content: center;
   width: 100%;
   height: 100%;
 }
-.BoardDiv {
-  flex-shrink: 0;
-  background-color: var(--color);
-  height: 300px;
-  width: 300px;
+.CardsContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: fit-content;
+  padding: 40px 40px 0px 40px;
 }
-.BoardDiv:not(:first-child) {
+.Card {
+  background-color: var(--board-div-color);
+  /* min-height: 328px; */
+  width: 270px;
+  height: fit-content;
+  min-height: 328px;
+  border-radius: 3px;
+  color: var(--color);
+  box-shadow: rgba(0, 0, 0, 0.2) 1.95px 1.95px 2.6px;
+}
+.Card:not(:first-child) {
   margin-left: 20px;
+}
+.CardTitleDiv {
+  user-select: none;
+  color: var(--color);
+  opacity: 0.7;
+  width: 270px;
+  height: 48px;
+  padding: 10px;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+.Issue {
+  background-color: var(--issue-background-color);
+  color: var(--color);
+  width: 260px;
+  margin-left: 5px;
+  border-radius: 3px;
+  padding: 40px; /* to tak tylko żeby ten issue był większy*/
+  box-shadow: rgba(0, 0, 0, 0.2) 1.95px 1.95px 2.6px;
+  margin-bottom: 8px;
 }
 
 .Menu {
+  z-index: 1200;
   box-shadow: 1px 1px 15px 0px rgba(0, 0, 0, 0.5);
   position: absolute;
   right: 10px;
@@ -323,6 +363,8 @@ html.mode-transition path {
 
 @media (max-width: 1280px) {
   .ContentContainer {
+    width: 100vw;
+    height: calc(100vh - 64px);
     margin-left: 0px;
   }
   .Toolbar {
