@@ -38,7 +38,7 @@ function Input({ InputArray }) {
         {item.name}
       </label>
       <div className="InnerInputDiv">
-        <input id={item.id} type={item.type} className="Input" />
+        <input id={item.id} type={item.type} className="Input" {...item.ref} />
         <fieldset aria-hidden="true" className="Fieldset">
           <legend className="Legend">
             <span>{item.name}</span>

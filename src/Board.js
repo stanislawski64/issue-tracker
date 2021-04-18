@@ -1,24 +1,16 @@
+import DragNDrop from './DragNDrop';
+
 function Board() {
+  const data = [
+    { title: 'to do', items: ['1', '2', '3', '4', '5', '6'] },
+    { title: 'in progress', items: ['7', '8'] },
+    { title: 'in review', items: ['9'] },
+    { title: 'done', items: ['10'] },
+  ];
+
   return (
     <main className="MainContent Board">
-      <div className="CardsContainer">
-        <div className="Card">
-          <div className="CardTitleDiv">to do</div>
-          <div className="Issue">Yo it's an issue</div>
-          <div className="Issue">Yo it's an issue</div>
-          <div className="Issue">Yo it's an issue</div>
-          <div className="Issue">Yo it's an issue</div>
-        </div>
-        <div className="Card">
-          <div className="CardTitleDiv">in progress</div>
-        </div>
-        <div className="Card">
-          <div className="CardTitleDiv">in review</div>
-        </div>
-        <div className="Card">
-          <div className="CardTitleDiv">done</div>
-        </div>
-      </div>
+      <DragNDrop data={data} />
     </main>
   );
 }
