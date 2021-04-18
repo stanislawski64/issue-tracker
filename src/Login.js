@@ -1,15 +1,47 @@
 import Input from './Input';
 import FormButton from './FormButton';
+import { useForm } from 'react-hook-form';
 
 function Login() {
-  function handleLogin(event) {
-    console.log('you login');
-    event.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  function handleLogin(data) {
+    console.log(data);
   }
 
   const InputArray = [
-    { name: 'Username', id: 'username', type: 'text' },
-    { name: 'Password', id: 'password', type: 'password' },
+    {
+      name: 'Username',
+      id: 'username',
+      type: 'text',
+      ref: {
+        ...register('username', {
+          required: 'You must specify a valid username',
+          minLength: {
+            value: 4,
+            message: 'You must specify a valid username',
+          },
+        }),
+      },
+    },
+    {
+      name: 'Password',
+      id: 'password',
+      type: 'password',
+      ref: {
+        ...register('password', {
+          required: 'You must specify a valid password',
+          minLength: {
+            value: 4,
+            message: 'You must specify a valid password',
+          },
+        }),
+      },
+    },
   ];
 
   return (
@@ -17,11 +49,15 @@ function Login() {
       <form
         id="Form"
         autoComplete="off"
-        onSubmit={handleLogin}
+        onSubmit={handleSubmit(handleLogin)}
         className="Form"
       >
         <Input InputArray={InputArray} />
         <FormButton text="Login" />
+        <div className="FormError">
+          {errors.username && <p>{errors.username.message}</p>}
+          {errors.password && <p>{errors.password.message}</p>}
+        </div>
       </form>
     </main>
   );

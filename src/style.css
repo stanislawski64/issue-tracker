@@ -13,11 +13,15 @@ html {
   --theme-color: #1976d2;
   --theme-color-secondary: #0052cc;
   --side-menu-fill: #0052cc;
+  --issue-hover-bg: rgb(0, 82, 204, 0.6); /* the same as --side-menu-fill*/
+  --issue-hover-color: white;
   --form-label-color: rgba(0, 0, 0, 0.54);
   --divider: rgba(0, 0, 0, 0.12);
   --fieldset-border-color: rgba(0, 0, 0, 0.23);
-  --board-div-color: rgb(231, 231, 231);
+  --card-background-color: rgb(231, 231, 231);
   --issue-background-color: rgb(250, 250, 250);
+  --backlog-table-background-color: rgb(231, 231, 231);
+  --backlog-row-background-color: rgb(250, 250, 250);
 }
 html[data-theme='dark'] {
   --bg: #181818;
@@ -27,10 +31,14 @@ html[data-theme='dark'] {
   --side-menu-link-hover: rgb(255, 255, 255, 0.04);
   --toolbar-button-hover: rgba(255, 255, 255, 0.1);
   --side-menu-fill: #1976d2;
+  --issue-hover-bg: rgb(25, 118, 210, 0.6); /* the same as --side-menu-fill */
+  --issue-hover-color: white;
   --form-label-color: rgba(255, 255, 255, 0.54);
   --fieldset-border-color: rgba(255, 255, 255, 0.23);
-  --board-div-color: rgb(54, 54, 54);
-  --issue-background-color: rgba(255, 255, 255, 0.2);
+  --card-background-color: rgb(54, 54, 54);
+  --issue-background-color: rgb(94, 94, 94);
+  --backlog-table-background-color: rgb(54, 54, 54);
+  --backlog-row-background-color: rgb(94, 94, 94);
 }
 html.mode-transition,
 html.mode-transition *,
@@ -153,6 +161,7 @@ html.mode-transition path {
   z-index: 1000;
   position: absolute;
   left: 0px;
+  top: 64px;
   height: calc(100vh - 64px);
   width: 100vw;
   visibility: hidden;
@@ -259,7 +268,7 @@ html.mode-transition path {
   padding: 40px 40px 0px 40px;
 }
 .Card {
-  background-color: var(--board-div-color);
+  background-color: var(--card-background-color);
   /* min-height: 328px; */
   width: 270px;
   height: fit-content;
@@ -287,9 +296,45 @@ html.mode-transition path {
   width: 260px;
   margin-left: 5px;
   border-radius: 3px;
-  padding: 40px; /* to tak tylko żeby ten issue był większy*/
+  padding: 20px 10px;
   box-shadow: rgba(0, 0, 0, 0.2) 1.95px 1.95px 2.6px;
   margin-bottom: 8px;
+}
+.Issue:hover {
+  cursor: grab;
+  /* transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; */
+  /* background-color: var(--issue-hover-bg); */
+  /* color: var(--issue-hover-color); */
+}
+.current {
+  background-color: var(--card-background-color);
+  box-shadow: none;
+  color: transparent;
+}
+.Backlog {
+  padding: 40px 40px 0px 40px;
+}
+.BacklogTable {
+  width: 100%;
+  height: fit-content;
+  background-color: var(--backlog-table-background-color);
+  padding: 10px 10px;
+  border-radius: 3px;
+}
+.BacklogRow {
+  min-height: 40px;
+  color: var(--color);
+  width: 100%;
+  padding: 12px 10px;
+  background-color: var(--backlog-row-background-color);
+}
+.BacklogRow:hover {
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  background-color: var(--issue-hover-bg);
+  color: var(--issue-hover-color);
+}
+.BacklogRow:not(:last-child) {
+  margin-bottom: 2px;
 }
 
 .Menu {
@@ -332,7 +377,7 @@ html.mode-transition path {
 .FormButton {
   box-shadow: 0px 3px 1px -2px rgb(0, 0, 0, 0.2),
     0px 2px 2px 0px rgb(0, 0, 0, 0.14), 0px 1px 5px 0px rgb(0, 0, 0, 0.12);
-  width: 224px;
+  width: 250px;
   height: 36px;
   display: flex;
   justify-content: center;
@@ -359,6 +404,17 @@ html.mode-transition path {
 .FormButton:hover {
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+.FormError > p {
+  color: #bf1650;
+  font-weight: bold;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  width: 250px;
+  text-align: center;
+}
+.FormError > p::before {
+  display: inline;
+  content: '⚠ ';
 }
 
 @media (max-width: 1280px) {
@@ -400,7 +456,7 @@ html.mode-transition path {
 
 @media (min-width: 1281px) {
   .Backdrop {
-    visibility: hidden !important;
+    visibility: hidden;
   }
 }
 

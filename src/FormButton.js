@@ -11,7 +11,7 @@ function FormButton({ text }) {
         let x = event.clientX - button.getBoundingClientRect().left;
         let y = event.clientY - button.getBoundingClientRect().top;
         const r = Math.sqrt(
-          Math.pow(Math.abs(x - 112) + 112, 2) +
+          Math.pow(Math.abs(x - 125) + 125, 2) +
             Math.pow(Math.abs(y - 18) + 18, 2),
         );
         rippleParent.style.left = x - r + 'px';
