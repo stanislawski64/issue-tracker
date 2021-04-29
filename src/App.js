@@ -8,21 +8,24 @@ import Home from './Home';
 import Register from './Register';
 import Login from './Login';
 import ToolbarSideMenuContainer from './ToolbarSideMenuContainer';
+import { AuthProvider } from './auth-context';
 
 function App() {
   return (
     <Router>
-      <ToolbarSideMenuContainer />
-      <div className="ContentContainer">
-        <Switch>
-          <Route path="/" exact render={() => <Home />} />
-          <Route path="/register" render={() => <Register />} />
-          <Route path="/login" exact render={() => <Login />} />
-          <Route path="/backlog" render={() => <Backlog />} />
-          <Route path="/board" render={() => <Board />} />
-          <Route path="/settings" render={() => <Settings />} />
-        </Switch>
-      </div>
+      <AuthProvider>
+        <ToolbarSideMenuContainer />
+        <div className="ContentContainer">
+          <Switch>
+            <Route path="/" exact component={() => <Home />} />
+            <Route path="/register" component={() => <Register />} />
+            <Route path="/login" component={() => <Login />} />
+            <Route path="/backlog" component={() => <Backlog />} />
+            <Route path="/board" component={() => <Board />} />
+            <Route path="/settings" component={() => <Settings />} />
+          </Switch>
+        </div>
+      </AuthProvider>
     </Router>
   );
 }

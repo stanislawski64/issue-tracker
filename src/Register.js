@@ -1,36 +1,25 @@
 import Input from './Input';
 import FormButton from './FormButton';
 import { useForm } from 'react-hook-form';
+import { register as apiRegister } from './auth-provider';
+import { useState } from 'react';
 
 function Register() {
-  // useEffect(() => {
-  //   async function getToken() {
-  //     const response = await fetch(
-  //       'http://localhost:3001/authentication/guest',
-  //     );
-  //     const data = await response.json();
-  //     const { authToken } = data;
-  //     return authToken;
-  //   }
-  //   getToken();
-  // }, []);
-
-  // const Token = localStorage.getItem("Token");
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const [passwordsMatched, setPasswordsMatched] = useState(true);
+
   function handleRegistration(data) {
-    let FormError = document.getElementsByClassName('FormError')[0];
     if (data.password !== data.repeat_password) {
-      FormError.innerHTML = '<p>The passwords do not match</p>';
+      setPasswordsMatched(false);
+      return;
     } else {
-      FormError.innerHTML = '';
       const { repeat_password, ...remainingData } = data;
-      console.log(remainingData);
+      apiRegister(remainingData);
     }
   }
 
@@ -95,6 +84,7 @@ function Register() {
           {errors.email && <p>{errors.email.message}</p>}
           {errors.username && <p>{errors.username.message}</p>}
           {errors.password && <p>{errors.password.message}</p>}
+          {passwordsMatched ? null : <p>The passwords do not match</p>}
         </div>
       </form>
     </main>

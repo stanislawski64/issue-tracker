@@ -1,6 +1,7 @@
 import Input from './Input';
 import FormButton from './FormButton';
 import { useForm } from 'react-hook-form';
+import { useAuth } from './auth-context';
 
 function Login() {
   const {
@@ -9,9 +10,7 @@ function Login() {
     formState: { errors },
   } = useForm();
 
-  function handleLogin(data) {
-    console.log(data);
-  }
+  const { login } = useAuth();
 
   const InputArray = [
     {
@@ -49,7 +48,7 @@ function Login() {
       <form
         id="Form"
         autoComplete="off"
-        onSubmit={handleSubmit(handleLogin)}
+        onSubmit={handleSubmit(login)}
         className="Form"
       >
         <Input InputArray={InputArray} />
