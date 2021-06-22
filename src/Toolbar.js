@@ -5,7 +5,7 @@ import ToolbarButtons from './ToolbarButtons';
 function Toolbar({ toggleSideMenu }) {
   const [open, setOpen] = useState(false);
 
-  let menuRef = useRef();
+  const menuRef = useRef();
 
   useEffect(() => {
     let ListenerFunction = (event) => {

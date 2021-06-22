@@ -1,7 +1,16 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import AddIssueButton from './AddIssueButton';
+import Modal from './Modal';
 
-function DragNDrop({ data }) {
-  const [list, setList] = useState(data);
+function DragNDropBoard({ data, processIssueProps }) {
+  const [list, setList] = useState([]);
+
+  const [renderModal, setRenderModal] = useState(false);
+
+  useEffect(() => {
+    setList(data);
+  }, [data]);
+
   const [dragging, setDragging] = useState(false);
 
   const dragItem = useRef();
@@ -54,6 +63,18 @@ function DragNDrop({ data }) {
     return 'Issue';
   }
 
+  function handleDragOver(e) {
+    e.preventDefault();
+  }
+
+  function triggerModalRender(group) {
+    setRenderModal(group);
+  }
+
+  function hideModal() {
+    setRenderModal(false);
+  }
+
   return (
     <div className="CardsContainer">
       {list.map((grp, grpI) => (
@@ -65,6 +86,7 @@ function DragNDrop({ data }) {
               ? (e) => handleDragEnter(e, { grpI, itemI: 0 })
               : null
           }
+          onDragOver={handleDragOver}
         >
           <div className="CardTitleDiv">{grp.title}</div>
           {grp.items.map((item, itemI) => (
@@ -73,17 +95,25 @@ function DragNDrop({ data }) {
               onDragEnter={
                 dragging ? (e) => handleDragEnter(e, { grpI, itemI }) : null
               }
+              onClick={() => processIssueProps(item.index)}
               draggable
-              key={item}
+              key={item.title}
               className={dragging ? getStyles({ grpI, itemI }) : 'Issue'}
             >
-              {item}
+              {item.title}
             </div>
           ))}
+          <AddIssueButton
+            defaultGroup={grp.title}
+            triggerModalRender={triggerModalRender}
+          />
         </div>
       ))}
+      {renderModal ? (
+        <Modal hideModal={hideModal} defaultGroup={renderModal} />
+      ) : null}
     </div>
   );
 }
 
-export default DragNDrop;
+export default DragNDropBoard;

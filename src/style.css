@@ -12,16 +12,20 @@ html {
   --toolbar-button-hover: rgba(0, 0, 0, 0.1);
   --theme-color: #1976d2;
   --theme-color-secondary: #0052cc;
+  --theme-color-secondary-dark: #00398e;
   --side-menu-fill: #0052cc;
   --issue-hover-bg: rgb(0, 82, 204, 0.6); /* the same as --side-menu-fill*/
   --issue-hover-color: white;
   --form-label-color: rgba(0, 0, 0, 0.54);
   --divider: rgba(0, 0, 0, 0.12);
   --fieldset-border-color: rgba(0, 0, 0, 0.23);
-  --card-background-color: rgb(231, 231, 231);
+  --select-arrow-color: rgba(0, 0, 0, 0.54);
+  --card-background-color: rgb(234, 234, 234);
   --issue-background-color: rgb(250, 250, 250);
   --backlog-table-background-color: rgb(231, 231, 231);
   --backlog-row-background-color: rgb(250, 250, 250);
+  --modal-bg: white;
+  --modal-color: black;
 }
 html[data-theme='dark'] {
   --bg: #181818;
@@ -35,10 +39,13 @@ html[data-theme='dark'] {
   --issue-hover-color: white;
   --form-label-color: rgba(255, 255, 255, 0.54);
   --fieldset-border-color: rgba(255, 255, 255, 0.23);
+  --select-arrow-color: rgba(255, 255, 255, 0.54);
   --card-background-color: rgb(54, 54, 54);
   --issue-background-color: rgb(94, 94, 94);
   --backlog-table-background-color: rgb(54, 54, 54);
   --backlog-row-background-color: rgb(94, 94, 94);
+  --modal-bg: rgb(54, 54, 54);
+  --modal-color: white;
 }
 html.mode-transition,
 html.mode-transition *,
@@ -239,6 +246,7 @@ html.mode-transition path {
   width: calc(100vw - 240px);
   margin-left: 240px;
   margin-top: 64px;
+  overflow: auto;
 }
 .MainContent {
   width: 100%;
@@ -251,7 +259,6 @@ html.mode-transition path {
   max-height: 100%;
   overflow: auto;
   flex: 1 1 0%;
-  position: relative;
 }
 .MainContentForm {
   display: flex;
@@ -269,7 +276,6 @@ html.mode-transition path {
 }
 .Card {
   background-color: var(--card-background-color);
-  /* min-height: 328px; */
   width: 270px;
   height: fit-content;
   min-height: 328px;
@@ -279,6 +285,9 @@ html.mode-transition path {
 }
 .Card:not(:first-child) {
   margin-left: 20px;
+}
+.Card > *:not(:first-child) {
+  margin-bottom: 8px;
 }
 .CardTitleDiv {
   user-select: none;
@@ -298,21 +307,16 @@ html.mode-transition path {
   border-radius: 3px;
   padding: 20px 10px;
   box-shadow: rgba(0, 0, 0, 0.2) 1.95px 1.95px 2.6px;
-  margin-bottom: 8px;
 }
 .Issue:hover {
-  cursor: grab;
+  cursor: pointer;
   /* transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; */
   /* background-color: var(--issue-hover-bg); */
   /* color: var(--issue-hover-color); */
 }
-.current {
-  background-color: var(--card-background-color);
-  box-shadow: none;
-  color: transparent;
-}
 .Backlog {
-  padding: 40px 40px 0px 40px;
+  padding: 40px;
+  height: fit-content;
 }
 .BacklogTable {
   width: 100%;
@@ -325,16 +329,26 @@ html.mode-transition path {
   min-height: 40px;
   color: var(--color);
   width: 100%;
-  padding: 12px 10px;
+  /* padding: 12px 10px; */
+  padding: 20px 10px;
   background-color: var(--backlog-row-background-color);
+  box-shadow: rgba(0, 0, 0, 0.2) 1.95px 1.95px 2.6px;
+  border-radius: 3px;
 }
+
 .BacklogRow:hover {
-  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  cursor: pointer;
+  /* transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   background-color: var(--issue-hover-bg);
-  color: var(--issue-hover-color);
+  color: var(--issue-hover-color); */
 }
 .BacklogRow:not(:last-child) {
-  margin-bottom: 2px;
+  margin-bottom: 8px;
+}
+.current {
+  background-color: var(--card-background-color);
+  box-shadow: none;
+  color: transparent;
 }
 
 .Menu {
@@ -397,14 +411,15 @@ html.mode-transition path {
   border-radius: 4px;
   letter-spacing: 0.02857em;
   text-transform: uppercase;
+  position: relative;
 }
 .FormButton {
   background-color: var(--theme-color-secondary);
 }
 .FormButton:hover {
-  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
-    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  background-color: var(--theme-color-secondary-dark);
 }
+
 .FormError > p {
   color: #bf1650;
   font-weight: bold;
@@ -455,7 +470,7 @@ html.mode-transition path {
 }
 
 @media (min-width: 1281px) {
-  .Backdrop {
+  .SideMenuBackdrop {
     visibility: hidden;
   }
 }
@@ -561,6 +576,7 @@ html.mode-transition path {
 @keyframes onAutoFillStart {
 }
 .Input:-webkit-autofill {
+  /* animation-name: onAutoFillStart; */
   animation-name: onAutoFillStart;
   caret-color: var(--color);
   box-shadow: inset 0 56px var(--bg) !important;
@@ -571,4 +587,490 @@ html.mode-transition path {
 .Input:-webkit-autofill::first-line {
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-size: 1rem;
+}
+
+.ModalContainer {
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1500;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Modal {
+  background-color: var(--modal-bg);
+  color: var(--modal-color);
+  position: absolute;
+  z-index: 2000;
+  width: 1040px;
+  height: calc(100% - 120px);
+  max-width: calc(100% - 120px);
+  border-radius: 3px;
+  box-shadow: rgb(9 30 66 / 8%) 0px 0px 0px 1px, rgb(9 30 66 / 8%) 0px 2px 1px,
+    rgb(9 30 66 / 31%) 0px 0px 20px -6px;
+}
+.ModalContent {
+  width: 100%;
+  height: 100%;
+  padding: 72px 100px 36px;
+  overflow-y: auto;
+  text-align: center;
+}
+.ModalTitle {
+  font-size: 3rem;
+  padding-bottom: 35px;
+}
+.ModalButton {
+  margin: 18px 18px 0px auto;
+  background-color: transparent;
+  width: 48px;
+  height: 48px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 50%;
+  position: absolute;
+  right: 0px;
+  transition: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#TrashIcon {
+  margin: 84px 18px 0px auto;
+}
+.ModalIconContainer {
+  width: 36px;
+  height: 36px;
+}
+.ModalButton:hover {
+  background-color: var(--toolbar-button-hover);
+}
+.ModalIcon path {
+  fill: var(--color);
+}
+.AddIssueDiv {
+  margin: auto 0px 0px 0px;
+  height: 48px;
+  width: 100%;
+}
+.AddIssueButton {
+  margin: 0px 8px 0px auto;
+  background-color: transparent;
+  width: 48px;
+  height: 48px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.AddIssueIconContainer {
+  width: 24px;
+  height: 24px;
+}
+.AddIssueButton:hover {
+  background-color: var(--toolbar-button-hover);
+}
+.AddIssueIcon path {
+  fill: var(--color);
+}
+.ConfirmationModal {
+  background-color: var(--modal-bg);
+  color: var(--modal-color);
+  position: absolute;
+  z-index: 2000;
+  width: 400px;
+  height: 250px;
+  border-radius: 3px;
+  box-shadow: rgb(9 30 66 / 8%) 0px 0px 0px 1px, rgb(9 30 66 / 8%) 0px 2px 1px,
+    rgb(9 30 66 / 31%) 0px 0px 20px -6px;
+}
+.ConfirmationModalContent {
+  width: 100%;
+  height: 100%;
+  padding: 70px 50px 0px;
+  text-align: center;
+}
+.ConfirmationModalButtonsDiv {
+  margin-top: 36px;
+  display: flex;
+  justify-content: space-around;
+}
+.ModalForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.ModalForm > :not(:first-child) {
+  margin-top: 15px;
+}
+.ModalForm > :last-child {
+  margin-bottom: 36px;
+}
+
+.OuterSelectDiv {
+  width: 250px;
+  border: 0;
+  display: inline-flex;
+  position: relative;
+  flex-direction: column;
+}
+.SelectDiv {
+  border-radius: 4px;
+  color: var(--color);
+  cursor: text;
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  line-height: 1.1876em;
+  letter-spacing: 0.00938em;
+}
+.InnerSelectDiv {
+  font: inherit;
+  color: currentColor;
+  width: 100%;
+  border: 0;
+  display: flex;
+  background: none;
+  box-sizing: content-box;
+  letter-spacing: inherit;
+  height: auto;
+  overflow: hidden;
+  min-height: 1.1876em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 16px;
+  user-select: none;
+  padding: 18.5px 14px;
+  padding-right: 32px;
+  text-transform: capitalize;
+}
+.SelectInput {
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.SelectIcon {
+  right: 7px;
+  top: calc(50% - 12px);
+  position: absolute;
+  pointer-events: none;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  font-size: 1.5rem;
+  transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.SelectIcon path {
+  fill: var(--select-arrow-color);
+}
+
+.InnerSelectDiv:focus {
+  outline: 0;
+}
+
+.SelectDiv.focused .Fieldset {
+  border-color: var(--theme-color);
+  border-width: 2px;
+}
+.SelectDiv.focused .SelectIcon {
+  transform: rotate(180deg);
+}
+.SelectMenuContainer {
+  position: fixed;
+  z-index: 1300;
+  inset: 0px; /*risky, maybe position:absolute? top:0px; left:0px; width:100vw; height: 100vh;*/
+}
+.SelectMenu {
+  width: 250px;
+  outline: 0;
+  position: absolute;
+  max-width: calc(100% - 32px);
+  min-height: 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  opacity: 1;
+  transform: none;
+  transform-origin: 0px 26px;
+  max-height: calc(100% - 96px);
+  box-shadow: 0px 5px 5px -3px rgb(0 0 0 / 20%),
+    0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%);
+  border-radius: 4px;
+  color: rgba(0, 0, 0, 0.87);
+  background-color: #fff;
+  animation: select-menu-enter-transform 178ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    select-menu-enter-opacity 267ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+@keyframes select-menu-enter-transform {
+  0% {
+    transform: scale(0.75);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes select-menu-enter-opacity {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.SelectMenuList {
+  outline: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  position: relative;
+  list-style: none;
+}
+.SelectMenuListItem {
+  height: 36px;
+  color: inherit;
+  border: 0;
+  cursor: pointer;
+  outline: 0;
+  user-select: none;
+  text-decoration: none;
+  background-color: transparent;
+  width: auto;
+  overflow: hidden;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  line-height: 1.5;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 16px;
+  padding-right: 16px;
+  white-space: nowrap;
+  letter-spacing: 0.00938em;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  display: flex;
+  text-align: left;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.SelectMenuListItem:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+.SelectMenuListItemSelected {
+  background-color: rgba(0, 0, 0, 0.16);
+}
+.SelectMenuListItemSelected:hover {
+  background-color: rgba(0, 0, 0, 0.24);
+}
+
+.TextareaOuterDiv {
+  display: inline-flex;
+  padding: 0;
+  position: relative;
+  min-width: 0;
+  width: 500px;
+  flex-direction: column;
+  vertical-align: top;
+}
+.TextareaInnerDiv {
+  position: relative;
+  border-radius: 4px;
+  color: rgba(0, 0, 0, 0.87);
+  cursor: text;
+  display: inline-flex;
+  align-items: center;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  line-height: 1.1876em;
+  letter-spacing: 0.00938em;
+}
+.Textarea {
+  height: 19px;
+  overflow: hidden;
+  padding: 18.5px 14px;
+  resize: none;
+  font: inherit;
+  color: var(--color);
+  width: 100%;
+  border: 0;
+  height: 1.1876em;
+  display: block;
+  min-width: 0;
+  background: none;
+  box-sizing: content-box;
+  letter-spacing: inherit;
+}
+.TextareaInnerDiv.focused .Fieldset {
+  border-color: var(--theme-color);
+  border-width: 2px;
+}
+.Textarea:focus {
+  outline: 0;
+}
+.Button {
+  color: #fff;
+  box-shadow: 0px 3px 1px -2px rgb(0, 0, 0, 0.2),
+    0px 2px 2px 0px rgb(0, 0, 0, 0.14), 0px 1px 5px 0px rgb(0, 0, 0, 0.12);
+  padding: 6px 16px;
+  font-size: 0.875rem;
+  width: 100px;
+  height: 36px;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-weight: 500;
+  line-height: 1.75;
+  border-radius: 4px;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  position: relative;
+}
+.ButtonPrimary {
+  background-color: rgb(25, 118, 210);
+}
+.ButtonPrimary:hover {
+  background-color: rgb(17, 82, 147);
+}
+.ButtonSecondary {
+  background-color: rgb(220, 0, 78);
+}
+.ButtonSecondary:hover {
+  background-color: rgb(154, 0, 54);
+}
+
+.OuterSnackbarDiv {
+  display: flex;
+  z-index: 1400;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  bottom: 8px;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
+@media (min-width: 600px) {
+  .OuterSnackbarDiv {
+    bottom: 24px;
+  }
+}
+
+.InnerSnackbarDiv {
+  color: #fff;
+  font-weight: 500;
+  display: flex;
+  padding: 6px 16px;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+  border-radius: 4px;
+  box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%),
+    0px 6px 10px 0px rgb(0 0 0 / 14%), 0px 1px 18px 0px rgb(0 0 0 / 12%);
+  opacity: 0;
+  transform: scale(0.75, 0.5625);
+  transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+.InnerSnackbarDivTransition {
+  opacity: 1;
+  transform: none;
+}
+
+.SnackbarSuccess {
+  background-color: #4caf50;
+}
+.SnackbarError {
+  background-color: #f44336;
+}
+.SnackbarIconContainer {
+  display: flex;
+  opacity: 0.9;
+  padding: 7px 0;
+  font-size: 22px;
+  margin-right: 12px;
+}
+.SnackbarIcon {
+  font-size: inherit;
+  fill: currentColor;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  flex-shrink: 0;
+  user-select: none;
+}
+.SnackbarMessage {
+  padding: 8px 0;
+}
+.SnackbarCloseIconDiv {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: -8px;
+  padding-left: 16px;
+}
+.SnackbarButton {
+  padding: 3px;
+  font-size: 1.125rem;
+  color: inherit;
+  flex: 0 0 auto;
+  overflow: visible;
+  text-align: center;
+  border-radius: 50%;
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  outline: 0;
+  position: relative;
+  align-items: center;
+  user-select: none;
+  justify-content: center;
+  text-decoration: none;
+  background-color: transparent;
+}
+.SnackbarButton:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+.SnackbarCloseIconContainer {
+  width: 100%;
+  display: flex;
+  align-items: inherit;
+  justify-content: inherit;
+}
+.SnackbarCloseIcon {
+  font-size: 1.25rem;
+  fill: currentColor;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  flex-shrink: 0;
+  user-select: none;
+}
+.ripple-parent-small {
+  pointer-events: none;
+  position: absolute;
+  width: 26px;
+  height: 26px;
 }

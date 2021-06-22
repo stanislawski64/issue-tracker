@@ -1,30 +1,37 @@
+import { useRef } from 'react';
 import Toolbar from './Toolbar';
 import SideMenu from './SideMenu';
 import Backdrop from './Backdrop';
 import Aux from './Auxiliary';
 
 function ToolbarSideMenuContainer() {
+  const backdrop = useRef();
+  const sidemenu = useRef();
+
   function toggleBackdrop() {
-    const Backdrop = document.getElementsByClassName('Backdrop')[0];
-    Backdrop.classList.toggle('visible');
+    backdrop.current.classList.toggle('visible');
   }
 
   function toggleSideMenu() {
-    const SideMenu = document.getElementsByClassName('SideMenu')[0];
-    SideMenu.classList.toggle('translated');
-    SideMenu.classList.toggle('visible');
-    SideMenu.classList.add('transition');
+    console.log(sidemenu.current.classList);
+    sidemenu.current.classList.toggle('translated');
+    sidemenu.current.classList.toggle('visible');
+    sidemenu.current.classList.add('transition');
     setTimeout(function () {
-      SideMenu.classList.remove('transition');
+      sidemenu.current.classList.remove('transition');
     }, 225);
     toggleBackdrop();
   }
 
   return (
     <Aux>
-      <Backdrop toggleSideMenu={toggleSideMenu} />
+      <Backdrop
+        backdropOnClickFunction={toggleSideMenu}
+        caseSpecificClass="SideMenuBackdrop"
+        ref={backdrop}
+      />
       <Toolbar toggleSideMenu={toggleSideMenu} />
-      <SideMenu />
+      <SideMenu ref={sidemenu} />
     </Aux>
   );
 }
