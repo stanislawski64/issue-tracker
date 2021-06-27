@@ -16,6 +16,7 @@ function DragNDropBacklog({ data, processIssueProps }) {
 
   const dragItem = useRef();
   const dragNode = useRef();
+  const newList = useRef();
 
   function handleDragStart(e, params) {
     console.log('drag starting...', params);
@@ -33,14 +34,17 @@ function DragNDropBacklog({ data, processIssueProps }) {
     if (e.target !== dragNode.current) {
       console.log('target is not the same');
       setList((oldList) => {
-        let newList = JSON.parse(JSON.stringify(oldList));
-        newList[params.grpI].items.splice(
+        newList.current = JSON.parse(JSON.stringify(oldList));
+        newList.current[params.grpI].items.splice(
           params.itemI,
           0,
-          newList[currentItem.grpI].items.splice(currentItem.itemI, 1)[0],
+          newList.current[currentItem.grpI].items.splice(
+            currentItem.itemI,
+            1,
+          )[0],
         );
         dragItem.current = params;
-        return newList;
+        return newList.current;
       });
     }
   }
@@ -51,6 +55,7 @@ function DragNDropBacklog({ data, processIssueProps }) {
     dragNode.current.removeEventListener('dragend', handleDragEnd);
     dragItem.current = null;
     dragNode.current = null;
+    console.log('newList', newList.current[0].items);
   }
 
   function getStyles(params) {
