@@ -40,7 +40,7 @@ function Backlog() {
   }, [issues]);
 
   function processIssueProps(index) {
-    console.log('index', index);
+    console.log('displayed issue index', index);
     setDescription(issues[index].description);
     setTitle(issues[index].title);
     setIndex(index);
@@ -49,7 +49,8 @@ function Backlog() {
   function deleteIssue(index) {
     hideConfirmationModal();
     hideModal();
-    console.log('deleted, reduced to atoms, gone', index);
+    console.log('deleted, reduced to atoms', index);
+    console.log('issues[index]', issues[index]);
   }
 
   function hideModal() {
