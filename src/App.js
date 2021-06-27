@@ -1,4 +1,5 @@
 import './style.css';
+// import './style2.css';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Backlog from './Backlog';
@@ -17,12 +18,12 @@ function App() {
         <ToolbarSideMenuContainer />
         <div className="ContentContainer">
           <Switch>
-            <Route path="/" exact component={() => <Home />} />
-            <Route path="/register" component={() => <Register />} />
-            <Route path="/login" component={() => <Login />} />
-            <Route path="/backlog" component={() => <Backlog />} />
-            <Route path="/board" component={() => <Board />} />
-            <Route path="/settings" component={() => <Settings />} />
+            <Route path="/" exact component={Home} />
+            <Route path="/register" component={Register} />
+            <Route path="/login" component={Login} />
+            <Route path="/backlog" component={Backlog} />
+            <Route path="/board" component={Board} />
+            <Route path="/settings" component={Settings} />
           </Switch>
         </div>
       </AuthProvider>

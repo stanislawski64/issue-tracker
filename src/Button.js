@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-function FormButton({ text }) {
+function Button({ text, secondary, onClick }) {
   const rippleSpan = useRef();
 
   useEffect(() => {
@@ -9,8 +9,7 @@ function FormButton({ text }) {
       let x = event.clientX - rippleSpan.current.getBoundingClientRect().left;
       let y = event.clientY - rippleSpan.current.getBoundingClientRect().top;
       const r = Math.sqrt(
-        Math.pow(Math.abs(x - 125) + 125, 2) +
-          Math.pow(Math.abs(y - 18) + 18, 2),
+        Math.pow(Math.abs(x - 50) + 50, 2) + Math.pow(Math.abs(y - 18) + 18, 2),
       );
       rippleParent.style.left = x - r + 'px';
       rippleParent.style.top = y - r + 'px';
@@ -34,11 +33,14 @@ function FormButton({ text }) {
   }, []);
 
   return (
-    <button className="FormButton">
+    <button
+      className={`Button ${secondary ? 'ButtonSecondary' : 'ButtonPrimary'} `}
+      onClick={() => onClick()}
+    >
       <span className="ripple-span" ref={rippleSpan}></span>
       <span>{text}</span>
     </button>
   );
 }
 
-export default FormButton;
+export default Button;

@@ -1,12 +1,13 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import SideMenuLinks from './SideMenuLinks';
 import { useLocation } from 'react-router-dom';
 
-function SideMenu() {
+function SideMenu(props, ref) {
   const location = useLocation();
 
   return (
-    <nav className="SideMenu" id="SideMenu">
+    <nav className="SideMenu" id="SideMenu" ref={ref}>
       <div className="SiteNameDiv">
         <Link
           to="/"
@@ -23,4 +24,4 @@ function SideMenu() {
   );
 }
 
-export default SideMenu;
+export default React.forwardRef(SideMenu);
