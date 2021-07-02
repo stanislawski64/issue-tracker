@@ -2,12 +2,16 @@ import Select from './Select';
 import FormButton from './FormButton';
 import Textarea from './Textarea';
 import { useState } from 'react';
+import { client } from './api-client';
+import { useAuth } from './auth-context';
 
-function AddIssueForm({ defaultGroup }) {
+function AddIssueForm({ defaultGroup, issues, setIssues, hideModal }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState(null);
   const [error, setError] = useState({});
+
+  const { token } = useAuth();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -20,7 +24,7 @@ function AddIssueForm({ defaultGroup }) {
       setError(localError);
       return;
     }
-    if (title.length > 150) {
+    if (title.length > 200) {
       localError.title = 'Title field exceeds the character limit';
       setError(localError);
       return;
@@ -31,7 +35,50 @@ function AddIssueForm({ defaultGroup }) {
       return;
     }
     setError(localError);
+
     console.log({ status, title, description });
+
+    const defaultValues = {
+      type: 'task',
+      priority: '4',
+      reporterId: 4,
+      projectId: 1,
+    }; // these values are never used or shown
+
+    let statusPosition = 0;
+
+    client('issues', {
+      token,
+      data: {
+        status,
+        title,
+        description,
+        ...defaultValues,
+        statusPosition: statusPosition++,
+      },
+    }).then(({ issue: newIssue }) => {
+      console.log('new issue', newIssue);
+      setIssues([...issues, newIssue]);
+    });
+
+    issues.forEach((issue) => {
+      if (issue.status === status)
+        if (issue.statusPosition !== statusPosition) {
+          client(`issues/${issue.id}`, {
+            token,
+            method: 'PUT',
+            data: {
+              statusPosition: statusPosition++,
+            },
+          }).then(({ issue: changedIssue }) => {
+            console.log('changed issue', changedIssue);
+          });
+        } else {
+          statusPosition++;
+        }
+    });
+
+    hideModal();
   }
 
   const selectOptions = [
@@ -44,7 +91,6 @@ function AddIssueForm({ defaultGroup }) {
   return (
     <form id="Form" className="ModalForm" onSubmit={(e) => handleSubmit(e)}>
       <Select
-        onSubmit={handleSubmit}
         defaultGroup={defaultGroup}
         selectOptions={selectOptions}
         value={status}

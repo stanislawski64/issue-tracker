@@ -326,11 +326,13 @@ html.mode-transition path {
   border-radius: 3px;
 }
 .BacklogRow {
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  display: flex;
+  align-items: center;
   min-height: 40px;
   color: var(--color);
   width: 100%;
-  /* padding: 12px 10px; */
-  padding: 20px 10px;
+  padding: 24px 10px;
   background-color: var(--backlog-row-background-color);
   box-shadow: rgba(0, 0, 0, 0.2) 1.95px 1.95px 2.6px;
   border-radius: 3px;
@@ -576,7 +578,6 @@ html.mode-transition path {
 @keyframes onAutoFillStart {
 }
 .Input:-webkit-autofill {
-  /* animation-name: onAutoFillStart; */
   animation-name: onAutoFillStart;
   caret-color: var(--color);
   box-shadow: inset 0 56px var(--bg) !important;
@@ -1073,4 +1074,31 @@ html.mode-transition path {
   position: absolute;
   width: 26px;
   height: 26px;
+}
+.Status {
+  width: 120px;
+  height: 24px;
+  background-color: #3083d6;
+  color: white;
+  margin: 0px 0px 0px auto;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  text-transform: uppercase;
+  box-shadow: rgb(0 0 0 / 20%) 1.95px 1.95px 2.6px;
+}
+.Todo {
+  background-color: #3083d6;
+}
+.InProgress {
+  background-color: #7a49a5;
+}
+.InReview {
+  background-color: #d63083;
+}
+.Done {
+  background-color: #83d630;
 }

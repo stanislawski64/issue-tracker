@@ -7,9 +7,12 @@ import { useEffect, useRef } from 'react';
 function Modal({
   title,
   description,
+  status,
   hideModal,
   defaultGroup,
   setRenderConfirmationModal,
+  issues,
+  setIssues,
 }) {
   const modalButton = useRef([]);
 
@@ -76,7 +79,12 @@ function Modal({
         ) : null}
         {defaultGroup ? (
           <ModalContent>
-            <AddIssueForm defaultGroup={defaultGroup} />
+            <AddIssueForm
+              defaultGroup={defaultGroup}
+              issues={issues}
+              setIssues={setIssues}
+              hideModal={hideModal}
+            />
           </ModalContent>
         ) : null}
       </div>

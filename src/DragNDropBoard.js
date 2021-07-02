@@ -2,7 +2,13 @@ import { useState, useRef, useEffect } from 'react';
 import AddIssueButton from './AddIssueButton';
 import Modal from './Modal';
 
-function DragNDropBoard({ data, processIssueProps }) {
+function DragNDropBoard({
+  data,
+  processIssueProps,
+  issues,
+  setIssues,
+  updateIssues,
+}) {
   const [list, setList] = useState([]);
 
   const [renderModal, setRenderModal] = useState(false);
@@ -15,6 +21,7 @@ function DragNDropBoard({ data, processIssueProps }) {
 
   const dragItem = useRef();
   const dragNode = useRef();
+  const newList = useRef();
 
   function handleDragStart(e, params) {
     console.log('drag starting...', params);
@@ -32,14 +39,17 @@ function DragNDropBoard({ data, processIssueProps }) {
     if (e.target !== dragNode.current) {
       console.log('target is not the same');
       setList((oldList) => {
-        let newList = JSON.parse(JSON.stringify(oldList));
-        newList[params.grpI].items.splice(
+        newList.current = JSON.parse(JSON.stringify(oldList));
+        newList.current[params.grpI].items.splice(
           params.itemI,
           0,
-          newList[currentItem.grpI].items.splice(currentItem.itemI, 1)[0],
+          newList.current[currentItem.grpI].items.splice(
+            currentItem.itemI,
+            1,
+          )[0],
         );
         dragItem.current = params;
-        return newList;
+        return newList.current;
       });
     }
   }
@@ -48,6 +58,12 @@ function DragNDropBoard({ data, processIssueProps }) {
     console.log('Ending drag...');
     setDragging(false);
     dragNode.current.removeEventListener('dragend', handleDragEnd);
+    if (newList.current)
+      updateIssues(
+        newList.current[dragItem.current.grpI].items,
+        newList.current[dragItem.current.grpI].title,
+      );
+    newList.current = null;
     dragItem.current = null;
     dragNode.current = null;
   }
@@ -97,7 +113,7 @@ function DragNDropBoard({ data, processIssueProps }) {
               }
               onClick={() => processIssueProps(item.index)}
               draggable
-              key={item.title}
+              key={item.id}
               className={dragging ? getStyles({ grpI, itemI }) : 'Issue'}
             >
               {item.title}
@@ -110,7 +126,12 @@ function DragNDropBoard({ data, processIssueProps }) {
         </div>
       ))}
       {renderModal ? (
-        <Modal hideModal={hideModal} defaultGroup={renderModal} />
+        <Modal
+          hideModal={hideModal}
+          defaultGroup={renderModal}
+          issues={issues}
+          setIssues={setIssues}
+        />
       ) : null}
     </div>
   );

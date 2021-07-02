@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Modal from './Modal';
-import DragNDropBacklog from './DragNDropBacklog';
+import BacklogData from './BacklogData';
 import ConfirmationModal from './ConfirmationModal';
 import { useAuth } from './auth-context';
 import { client } from './api-client';
@@ -16,6 +16,8 @@ function Backlog() {
 
   const [index, setIndex] = useState(false);
 
+  const [status, setStatus] = useState(false);
+
   const [renderConfirmationModal, setRenderConfirmationModal] = useState(false);
 
   useEffect(() => {
@@ -25,15 +27,31 @@ function Backlog() {
     });
   }, [token]);
 
-  const [data, setData] = useState([{ title: 'Backlog', items: [] }]);
+  const initialState = [{ title: 'Backlog', items: [] }];
+
+  const [data, setData] = useState(initialState);
 
   useEffect(() => {
-    const newData = JSON.parse(JSON.stringify(data));
-    issues.forEach((issue, index) => {
-      newData[0].items.splice(issue.listPosition - 1, 0, {
-        index: index,
-        title: issue.title,
+    const newData = initialState;
+    const statuses = [
+      { title: 'to do', items: [] },
+      { title: 'in progress', items: [] },
+      { title: 'in review', items: [] },
+      { title: 'done', items: [] },
+    ];
+    statuses.forEach((status) => {
+      issues.forEach((issue, index) => {
+        issue.status === status.title &&
+          status.items.splice(issue.statusPosition, 0, {
+            id: issue.id,
+            index: index,
+            title: issue.title,
+            status: issue.status,
+          });
       });
+    });
+    statuses.forEach((group) => {
+      newData[0].items.push(...group.items);
     });
     setData(newData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -44,19 +62,26 @@ function Backlog() {
     setDescription(issues[index].description);
     setTitle(issues[index].title);
     setIndex(index);
+    setStatus(issues[index].status);
   }
 
   function deleteIssue(index) {
     hideConfirmationModal();
     hideModal();
-    console.log('deleted, reduced to atoms', index);
-    console.log('issues[index]', issues[index]);
+    client(`issues/${issues[index].id}`, {
+      token,
+      method: 'DELETE',
+    }).then(({ issue: removedIssue }) => {
+      console.log('removed issue', removedIssue);
+      setIssues(issues.filter((item, i) => i !== index));
+    });
   }
 
   function hideModal() {
     setDescription(false);
     setTitle(false);
     setIndex(false);
+    setStatus(false);
   }
 
   function hideConfirmationModal() {
@@ -69,6 +94,7 @@ function Backlog() {
         <Modal
           description={description}
           title={title}
+          status={status}
           hideModal={hideModal}
           setRenderConfirmationModal={setRenderConfirmationModal}
         />
@@ -81,7 +107,12 @@ function Backlog() {
           onClickYes={() => deleteIssue(index)}
         />
       ) : null}
-      <DragNDropBacklog data={data} processIssueProps={processIssueProps} />
+      <BacklogData
+        data={data}
+        processIssueProps={processIssueProps}
+        issues={issues}
+        setIssues={setIssues}
+      />
     </main>
   );
 }
