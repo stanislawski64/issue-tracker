@@ -16,6 +16,8 @@ function Board() {
 
   const [index, setIndex] = useState(false);
 
+  const [status, setStatus] = useState(false);
+
   const [renderConfirmationModal, setRenderConfirmationModal] = useState(false);
 
   useEffect(() => {
@@ -25,21 +27,25 @@ function Board() {
     });
   }, [token]);
 
-  const [data, setData] = useState([
+  const initialState = [
     { title: 'to do', items: [] },
     { title: 'in progress', items: [] },
     { title: 'in review', items: [] },
     { title: 'done', items: [] },
-  ]);
+  ];
+
+  const [data, setData] = useState(initialState);
 
   useEffect(() => {
-    const newData = JSON.parse(JSON.stringify(data));
+    const newData = initialState;
     newData.forEach((group) => {
       issues.forEach((issue, index) => {
         issue.status === group.title &&
-          group.items.splice(issue.listPosition - 1, 0, {
+          group.items.splice(issue.statusPosition, 0, {
+            id: issue.id,
             index: index,
             title: issue.title,
+            statusPosition: issue.statusPosition,
           });
       });
     });
@@ -48,16 +54,10 @@ function Board() {
   }, [issues]);
 
   function processIssueProps(index) {
-    console.log('index', index);
     setDescription(issues[index].description);
     setTitle(issues[index].title);
     setIndex(index);
-  }
-
-  function deleteIssue(index) {
-    hideConfirmationModal();
-    hideModal();
-    console.log('deleted, reduced to atoms, gone', index);
+    setStatus(issues[index].status);
   }
 
   function hideModal() {
@@ -70,12 +70,37 @@ function Board() {
     setRenderConfirmationModal(false);
   }
 
-  // const data = [
-  //   { title: 'to do', items: ['1', '2', '3', '4', '5', '6'] },
-  //   { title: 'in progress', items: ['7', '8'] },
-  //   { title: 'in review', items: ['9'] },
-  //   { title: 'done', items: ['10'] },
-  // ];
+  function updateIssues(list, newStatus) {
+    let statusPosition = 0;
+    list.forEach((issue) => {
+      if (issue.statusPosition !== statusPosition) {
+        client(`issues/${issue.id}`, {
+          token,
+          method: 'PUT',
+          data: {
+            status: newStatus,
+            statusPosition: statusPosition++,
+          },
+        }).then(({ issue: changedIssue }) => {
+          console.log('changed issue', changedIssue);
+        });
+      } else {
+        statusPosition++;
+      }
+    });
+  }
+
+  function deleteIssue(index) {
+    hideConfirmationModal();
+    hideModal();
+    client(`issues/${issues[index].id}`, {
+      token,
+      method: 'DELETE',
+    }).then(({ issue: removedIssue }) => {
+      console.log('removed issue', removedIssue);
+      setIssues(issues.filter((item, i) => i !== index));
+    });
+  }
 
   return (
     <main className="MainContent Board">
@@ -83,6 +108,7 @@ function Board() {
         <Modal
           description={description}
           title={title}
+          status={status}
           hideModal={hideModal}
           setRenderConfirmationModal={setRenderConfirmationModal}
         />
@@ -95,7 +121,13 @@ function Board() {
           onClickYes={() => deleteIssue(index)}
         />
       ) : null}
-      <DragNDropBoard data={data} processIssueProps={processIssueProps} />
+      <DragNDropBoard
+        data={data}
+        processIssueProps={processIssueProps}
+        issues={issues}
+        setIssues={setIssues}
+        updateIssues={updateIssues}
+      />
     </main>
   );
 }

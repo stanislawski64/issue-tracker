@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as auth from './auth-provider';
 import { useState } from 'react';
-import { getToken } from './auth-provider';
+import { getToken, getUser } from './auth-provider';
 import { useHistory } from 'react-router-dom';
 
 const AuthContext = React.createContext();
@@ -9,14 +9,18 @@ AuthContext.displayName = 'AuthContext';
 
 function AuthProvider(props) {
   const initialToken = getToken() || '';
+  const initialUser = getUser() || '';
   const [token, setToken] = useState(initialToken);
+
+  const [user, setUser] = useState(initialUser);
 
   const history = useHistory();
 
   const login = React.useCallback(
     (form) =>
-      auth.login(form).then((authToken) => {
+      auth.login(form).then(({ authToken, user }) => {
         setToken(authToken);
+        setUser(user);
         history.push('/board');
       }),
     [history],
@@ -30,12 +34,14 @@ function AuthProvider(props) {
   );
 
   const logout = React.useCallback(() => {
+    setToken(null);
+    setUser(null);
     auth.logout();
   }, []);
 
   const value = React.useMemo(
-    () => ({ token, login, register, logout }),
-    [token, login, register, logout],
+    () => ({ token, login, register, logout, user }),
+    [token, login, register, logout, user],
   );
 
   return <AuthContext.Provider value={value} {...props} />;

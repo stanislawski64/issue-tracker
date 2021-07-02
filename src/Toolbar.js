@@ -1,39 +1,38 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import ToolbarButtons from './ToolbarButtons';
+import { useAuth } from './auth-context';
 
 function Toolbar({ toggleSideMenu }) {
   const [open, setOpen] = useState(false);
 
+  const { user, logout } = useAuth();
+
   const menuRef = useRef();
 
   useEffect(() => {
-    let ListenerFunction = (event) => {
+    function ListenerFunction(event) {
       if (!menuRef.current.contains(event.target)) setOpen(false);
-    };
+    }
     document.addEventListener('mousedown', ListenerFunction);
     return () => {
       document.removeEventListener('mousedown', ListenerFunction);
     };
-  });
+  }, [open]);
 
   const [theme, setTheme] = useState(localStorage.getItem('theme'));
 
-  useEffect(() => {
-    if (theme === 'light') {
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-    } else {
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-    }
-  }, [theme]);
+  const timeout = useRef();
 
   useEffect(() => {
-    document.documentElement.addEventListener('transitionend', () => {
+    function disableTransition() {
       document.documentElement.classList.remove('mode-transition');
-    });
-  }, []);
+    }
+    clearTimeout(timeout.current);
+    timeout.current = setTimeout(disableTransition, 750);
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   function toggleNightMode() {
     if (theme === 'light') {
@@ -57,12 +56,23 @@ function Toolbar({ toggleSideMenu }) {
         ref={menuRef}
         style={!open ? { display: 'none' } : null}
       >
-        <Link to="/login" className="MenuItem">
-          Log In
-        </Link>
-        <Link to="/register" className="MenuItem">
-          Register
-        </Link>
+        {user ? (
+          <>
+            <div className="MenuItem">Hi, {user.name}</div>
+            <Link to="/login" className="MenuItem" onClick={logout}>
+              Log Out
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className="MenuItem">
+              Log In
+            </Link>
+            <Link to="/register" className="MenuItem">
+              Register
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );
