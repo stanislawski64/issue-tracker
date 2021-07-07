@@ -1,10 +1,23 @@
+import { useState, useEffect } from 'react';
 import Input from './Input';
 import FormButton from './FormButton';
 import { useForm } from 'react-hook-form';
-import { register as apiRegister } from './auth-provider';
-import { useState } from 'react';
+import { useAuth } from './auth-context';
+import { useHistory } from 'react-router-dom';
 
 function Register() {
+  const { token } = useAuth();
+
+  const { register: apiRegister } = useAuth();
+
+  const history = useHistory();
+
+  useEffect(() => {
+    if (token) {
+      history.push('/board');
+    }
+  }, [token, history]);
+
   const {
     register,
     handleSubmit,
@@ -42,6 +55,10 @@ function Register() {
           minLength: {
             value: 4,
             message: 'Username must have at least 4 characters',
+          },
+          maxLength: {
+            value: 30,
+            message: 'Username cannot be longer than 30 characters',
           },
         }),
       },

@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react';
-import Aux from './Auxiliary';
 import SelectMenu from './SelectMenu';
 import { ReactComponent as SelectIcon } from './SelectIcon.svg';
 
@@ -76,7 +75,7 @@ function Select({ defaultGroup, selectOptions, value, setValue }) {
   }
 
   return (
-    <Aux>
+    <>
       <div className="OuterSelectDiv" ref={outerselect}>
         <label className="FormLabel" ref={label}>
           Status
@@ -109,7 +108,7 @@ function Select({ defaultGroup, selectOptions, value, setValue }) {
           left={left}
         />
       ) : null}
-    </Aux>
+    </>
   );
 }
 

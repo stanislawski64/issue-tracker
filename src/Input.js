@@ -1,4 +1,3 @@
-import Aux from './Auxiliary';
 import { useEffect, useRef } from 'react';
 
 function Input({ InputArray }) {
@@ -58,6 +57,6 @@ function Input({ InputArray }) {
       </div>
     );
   });
-  return <Aux>{Input}</Aux>;
+  return <>{Input}</>;
 }
 export default Input;

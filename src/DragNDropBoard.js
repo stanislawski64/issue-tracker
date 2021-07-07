@@ -8,6 +8,7 @@ function DragNDropBoard({
   issues,
   setIssues,
   updateIssues,
+  setSnackbar,
 }) {
   const [list, setList] = useState([]);
 
@@ -131,6 +132,7 @@ function DragNDropBoard({
           defaultGroup={renderModal}
           issues={issues}
           setIssues={setIssues}
+          setSnackbar={setSnackbar}
         />
       ) : null}
     </div>

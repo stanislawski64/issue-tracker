@@ -3,7 +3,6 @@ import { ReactComponent as BoardIcon } from './BoardIcon.svg';
 import { ReactComponent as BacklogIcon } from './BacklogIcon.svg';
 import { ReactComponent as SettingsIcon } from './SettingsIcon.svg';
 import { useLocation } from 'react-router-dom';
-import Aux from './Auxiliary';
 
 function SideMenuLinks() {
   const location = useLocation();
@@ -32,7 +31,7 @@ function SideMenuLinks() {
     </SideMenuLink>
   ));
 
-  return <Aux>{SideMenuLinks}</Aux>;
+  return <>{SideMenuLinks}</>;
 }
 
 export default SideMenuLinks;

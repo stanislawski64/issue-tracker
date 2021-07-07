@@ -5,7 +5,13 @@ import { useState } from 'react';
 import { client } from './api-client';
 import { useAuth } from './auth-context';
 
-function AddIssueForm({ defaultGroup, issues, setIssues, hideModal }) {
+function AddIssueForm({
+  defaultGroup,
+  issues,
+  setIssues,
+  hideModal,
+  setSnackbar,
+}) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState(null);
@@ -77,6 +83,8 @@ function AddIssueForm({ defaultGroup, issues, setIssues, hideModal }) {
           statusPosition++;
         }
     });
+
+    setSnackbar('Issue has been added.');
 
     hideModal();
   }

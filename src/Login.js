@@ -1,14 +1,45 @@
+import { useState, useEffect } from 'react';
 import Input from './Input';
 import FormButton from './FormButton';
+import Snackbar from './Snackbar';
 import { useForm } from 'react-hook-form';
 import { useAuth } from './auth-context';
+import { useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 function Login() {
+  const { token } = useAuth();
+
+  const history = useHistory();
+
+  useEffect(() => {
+    if (token) {
+      history.push('/board');
+    }
+  }, [token, history]);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const location = useLocation();
+
+  const [snackbar, setSnackbar] = useState(false);
+
+  const [snackbarType, setSnackbarType] = useState('error');
+
+  useEffect(() => {
+    if (!location.state) return;
+    if (location.state.notLoggedIn)
+      setSnackbar('You have to be logged in to view that page.');
+    if (location.state.registered) {
+      setSnackbar('You have successfully registered. Now you can log in.');
+      setSnackbarType('success');
+    }
+    window.history.replaceState(null, '');
+  }, [location]);
 
   const { login } = useAuth();
 
@@ -45,6 +76,15 @@ function Login() {
 
   return (
     <main className="MainContentForm">
+      {snackbar && (
+        <Snackbar
+          type={snackbarType}
+          setOpen={setSnackbar}
+          message={snackbar}
+          showFor={6000}
+          caseSpecificClass="SnackbarFormOverride"
+        />
+      )}
       <form
         id="Form"
         autoComplete="off"
