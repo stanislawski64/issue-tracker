@@ -1,5 +1,4 @@
 import './style.css';
-// import './style2.css';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Backlog from './Backlog';

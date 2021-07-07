@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import Toolbar from './Toolbar';
 import SideMenu from './SideMenu';
 import Backdrop from './Backdrop';
-import Aux from './Auxiliary';
 
 function ToolbarSideMenuContainer() {
   const backdrop = useRef();
@@ -24,7 +23,7 @@ function ToolbarSideMenuContainer() {
   }
 
   return (
-    <Aux>
+    <>
       <Backdrop
         backdropOnClickFunction={toggleSideMenu}
         caseSpecificClass="SideMenuBackdrop"
@@ -32,7 +31,7 @@ function ToolbarSideMenuContainer() {
       />
       <Toolbar toggleSideMenu={toggleSideMenu} />
       <SideMenu ref={sidemenu} />
-    </Aux>
+    </>
   );
 }
 export default ToolbarSideMenuContainer;

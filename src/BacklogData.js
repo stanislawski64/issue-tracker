@@ -1,9 +1,14 @@
 import { useState, useEffect } from 'react';
-import Aux from './Auxiliary';
 import AddIssueButton from './AddIssueButton';
 import Modal from './Modal';
 
-function BacklogData({ data, processIssueProps, issues, setIssues }) {
+function BacklogData({
+  data,
+  processIssueProps,
+  issues,
+  setIssues,
+  setSnackbar,
+}) {
   const [list, setList] = useState([]);
 
   const [renderModal, setRenderModal] = useState(false);
@@ -21,7 +26,7 @@ function BacklogData({ data, processIssueProps, issues, setIssues }) {
   }
 
   return (
-    <Aux>
+    <>
       {list.map((group) => (
         <div key={group.title} className="BacklogTable">
           {group.items.map((item) => (
@@ -58,9 +63,10 @@ function BacklogData({ data, processIssueProps, issues, setIssues }) {
           defaultGroup={renderModal}
           issues={issues}
           setIssues={setIssues}
+          setSnackbar={setSnackbar}
         />
       ) : null}
-    </Aux>
+    </>
   );
 }
 

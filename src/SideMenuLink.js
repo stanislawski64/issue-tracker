@@ -1,43 +1,22 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { Ripple } from './Ripple';
 
 function SideMenuLink(props) {
   const rippleSpan = useRef();
+  const linkRef = useRef();
 
   useEffect(() => {
-    rippleSpan.current.addEventListener('mousedown', (event) => {
-      let rippleParent = document.createElement('span');
-      let x = event.clientX - rippleSpan.current.getBoundingClientRect().left;
-      let y = event.clientY - rippleSpan.current.getBoundingClientRect().top;
-      const r = Math.sqrt(
-        Math.pow(Math.abs(x - 120) + 120, 2) +
-          Math.pow(Math.abs(y - 24) + 24, 2),
-      );
-      rippleParent.style.height = 2 * r + 'px';
-      rippleParent.style.width = 2 * r + 'px';
-      rippleParent.style.left = x - r + 'px';
-      rippleParent.style.top = y - r + 'px';
-      let rippleChild = document.createElement('span');
-      rippleParent.classList.add('ripple-parent');
-      rippleParent.classList.add('ripple-parent-enter');
-      rippleChild.classList.add('ripple-child');
-      rippleChild.classList.add('ripple-child-side-menu-link');
-      rippleParent.appendChild(rippleChild);
-      rippleSpan.current.appendChild(rippleParent);
-      rippleSpan.current.addEventListener('mouseleave', Exit);
-      rippleSpan.current.addEventListener('mouseup', Exit);
-      rippleSpan.current.addEventListener('dragleave', Exit);
-      function Exit() {
-        rippleChild.classList.add('ripple-child-exit');
-        rippleChild.addEventListener('animationend', () => {
-          rippleParent.remove();
-        });
-      }
-    });
+    Ripple(
+      rippleSpan.current,
+      linkRef.current,
+      'ripple-child-side-menu-link',
+      'dragleave',
+    );
   }, []);
 
   return (
-    <div className="SideMenuDiv">
+    <div className="SideMenuDiv" ref={linkRef}>
       <Link
         to={props.linkPathname}
         className={

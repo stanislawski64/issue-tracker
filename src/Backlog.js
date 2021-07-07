@@ -2,11 +2,21 @@ import { useEffect, useState } from 'react';
 import Modal from './Modal';
 import BacklogData from './BacklogData';
 import ConfirmationModal from './ConfirmationModal';
+import Snackbar from './Snackbar';
 import { useAuth } from './auth-context';
 import { client } from './api-client';
+import { useHistory } from 'react-router-dom';
 
 function Backlog() {
   const { token } = useAuth();
+
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!token) {
+      history.push('/login', { notLoggedIn: true });
+    }
+  }, [token, history]);
 
   const [issues, setIssues] = useState([]);
 
@@ -19,6 +29,8 @@ function Backlog() {
   const [status, setStatus] = useState(false);
 
   const [renderConfirmationModal, setRenderConfirmationModal] = useState(false);
+
+  const [snackbar, setSnackbar] = useState(false);
 
   useEffect(() => {
     client('issues', { token }).then(({ issues }) => {
@@ -75,6 +87,7 @@ function Backlog() {
       console.log('removed issue', removedIssue);
       setIssues(issues.filter((item, i) => i !== index));
     });
+    setSnackbar('Issue has been deleted.');
   }
 
   function hideModal() {
@@ -90,6 +103,14 @@ function Backlog() {
 
   return (
     <main className="MainContent Backlog">
+      {snackbar && (
+        <Snackbar
+          type="success"
+          setOpen={setSnackbar}
+          message={snackbar}
+          showFor={6000}
+        />
+      )}
       {description && title ? (
         <Modal
           description={description}
@@ -112,6 +133,7 @@ function Backlog() {
         processIssueProps={processIssueProps}
         issues={issues}
         setIssues={setIssues}
+        setSnackbar={setSnackbar}
       />
     </main>
   );

@@ -1,12 +1,25 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Modal from './Modal';
 import DragNDropBoard from './DragNDropBoard';
 import ConfirmationModal from './ConfirmationModal';
+import Snackbar from './Snackbar';
 import { useAuth } from './auth-context';
 import { client } from './api-client';
+import { useHistory } from 'react-router-dom';
 
 function Board() {
   const { token } = useAuth();
+
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!token) {
+      history.push('/login', { notLoggedIn: true });
+    }
+  }, [token, history]);
+
+  const location = useLocation();
 
   const [issues, setIssues] = useState([]);
 
@@ -19,6 +32,15 @@ function Board() {
   const [status, setStatus] = useState(false);
 
   const [renderConfirmationModal, setRenderConfirmationModal] = useState(false);
+
+  const [snackbar, setSnackbar] = useState(false);
+
+  useEffect(() => {
+    if (!location.state) return;
+    if (location.state.loggedIn)
+      setSnackbar('You have successfully logged in.');
+    window.history.replaceState(null, '');
+  }, [location]);
 
   useEffect(() => {
     client('issues', { token }).then(({ issues }) => {
@@ -73,20 +95,20 @@ function Board() {
   function updateIssues(list, newStatus) {
     let statusPosition = 0;
     list.forEach((issue) => {
-      if (issue.statusPosition !== statusPosition) {
-        client(`issues/${issue.id}`, {
-          token,
-          method: 'PUT',
-          data: {
-            status: newStatus,
-            statusPosition: statusPosition++,
-          },
-        }).then(({ issue: changedIssue }) => {
-          console.log('changed issue', changedIssue);
-        });
-      } else {
-        statusPosition++;
-      }
+      // if (issue.statusPosition !== statusPosition) {
+      client(`issues/${issue.id}`, {
+        token,
+        method: 'PUT',
+        data: {
+          status: newStatus,
+          statusPosition: statusPosition++,
+        },
+      }).then(({ issue: changedIssue }) => {
+        console.log('changed issue', changedIssue);
+      });
+      // } else {
+      //   statusPosition++;
+      // }
     });
   }
 
@@ -100,10 +122,19 @@ function Board() {
       console.log('removed issue', removedIssue);
       setIssues(issues.filter((item, i) => i !== index));
     });
+    setSnackbar('Issue has been deleted.');
   }
 
   return (
     <main className="MainContent Board">
+      {snackbar && (
+        <Snackbar
+          type="success"
+          setOpen={setSnackbar}
+          message={snackbar}
+          showFor={6000}
+        />
+      )}
       {description && title ? (
         <Modal
           description={description}
@@ -127,6 +158,7 @@ function Board() {
         issues={issues}
         setIssues={setIssues}
         updateIssues={updateIssues}
+        setSnackbar={setSnackbar}
       />
     </main>
   );

@@ -1,4 +1,3 @@
-import Aux from './Auxiliary';
 import ToolbarButton from './ToolbarButton';
 import { ReactComponent as MenuIcon } from './MenuIcon.svg';
 import { ReactComponent as AccountIcon } from './AccountIcon.svg';
@@ -37,7 +36,7 @@ function ToolbarButtons({ toggleSideMenu, toggleNightMode, setOpen }) {
     </ToolbarButton>
   ));
 
-  return <Aux>{ToolbarButtons}</Aux>;
+  return <>{ToolbarButtons}</>;
 }
 
 export default ToolbarButtons;

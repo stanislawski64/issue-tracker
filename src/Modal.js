@@ -13,6 +13,7 @@ function Modal({
   setRenderConfirmationModal,
   issues,
   setIssues,
+  setSnackbar,
 }) {
   const modalButton = useRef([]);
 
@@ -84,6 +85,7 @@ function Modal({
               issues={issues}
               setIssues={setIssues}
               hideModal={hideModal}
+              setSnackbar={setSnackbar}
             />
           </ModalContent>
         ) : null}

@@ -3,7 +3,7 @@ import { ReactComponent as SuccessIcon } from './SuccessIcon.svg';
 import { ReactComponent as CloseIcon } from './CloseIcon.svg';
 import { ReactComponent as ErrorIcon } from './ErrorIcon.svg';
 
-function Snackbar({ type, setOpen, message, showFor }) {
+function Snackbar({ type, setOpen, message, showFor, caseSpecificClass }) {
   const autoHide = useRef();
 
   useEffect(() => {
@@ -52,7 +52,7 @@ function Snackbar({ type, setOpen, message, showFor }) {
   }
 
   return (
-    <div className="OuterSnackbarDiv">
+    <div className={`OuterSnackbarDiv ${caseSpecificClass}`}>
       <div
         className={`InnerSnackbarDiv ${
           type === 'success' ? 'SnackbarSuccess' : 'SnackbarError'

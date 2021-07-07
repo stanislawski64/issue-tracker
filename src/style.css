@@ -14,8 +14,6 @@ html {
   --theme-color-secondary: #0052cc;
   --theme-color-secondary-dark: #00398e;
   --side-menu-fill: #0052cc;
-  --issue-hover-bg: rgb(0, 82, 204, 0.6); /* the same as --side-menu-fill*/
-  --issue-hover-color: white;
   --form-label-color: rgba(0, 0, 0, 0.54);
   --divider: rgba(0, 0, 0, 0.12);
   --fieldset-border-color: rgba(0, 0, 0, 0.23);
@@ -35,8 +33,6 @@ html[data-theme='dark'] {
   --side-menu-link-hover: rgb(255, 255, 255, 0.04);
   --toolbar-button-hover: rgba(255, 255, 255, 0.1);
   --side-menu-fill: #1976d2;
-  --issue-hover-bg: rgb(25, 118, 210, 0.6); /* the same as --side-menu-fill */
-  --issue-hover-color: white;
   --form-label-color: rgba(255, 255, 255, 0.54);
   --fieldset-border-color: rgba(255, 255, 255, 0.23);
   --select-arrow-color: rgba(255, 255, 255, 0.54);
@@ -252,8 +248,6 @@ html.mode-transition path {
   width: 100%;
   height: 100%;
   display: flex;
-  color: var(--color); /*póki co tam tekst, ale kiedyś będzie trzeba to usunąć*/
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif; /*to samo co wyżej*/
 }
 .Board {
   max-height: 100%;
@@ -282,6 +276,8 @@ html.mode-transition path {
   border-radius: 3px;
   color: var(--color);
   box-shadow: rgba(0, 0, 0, 0.2) 1.95px 1.95px 2.6px;
+  color: var(--color);
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 }
 .Card:not(:first-child) {
   margin-left: 20px;
@@ -305,14 +301,11 @@ html.mode-transition path {
   width: 260px;
   margin-left: 5px;
   border-radius: 3px;
-  padding: 20px 10px;
+  padding: 24px 10px;
   box-shadow: rgba(0, 0, 0, 0.2) 1.95px 1.95px 2.6px;
 }
 .Issue:hover {
   cursor: pointer;
-  /* transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; */
-  /* background-color: var(--issue-hover-bg); */
-  /* color: var(--issue-hover-color); */
 }
 .Backlog {
   padding: 40px;
@@ -340,9 +333,6 @@ html.mode-transition path {
 
 .BacklogRow:hover {
   cursor: pointer;
-  /* transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  background-color: var(--issue-hover-bg);
-  color: var(--issue-hover-color); */
 }
 .BacklogRow:not(:last-child) {
   margin-bottom: 8px;
@@ -359,7 +349,8 @@ html.mode-transition path {
   position: absolute;
   right: 10px;
   top: 10px;
-  width: 150px;
+  min-width: 150px;
+  width: fit-content;
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -379,6 +370,7 @@ html.mode-transition path {
   line-height: 1.5;
   padding: 6px;
   padding-left: 18px;
+  padding-right: 18px;
   white-space: nowrap;
 }
 .MenuItem:hover {
@@ -620,6 +612,7 @@ html.mode-transition path {
   padding: 72px 100px 36px;
   overflow-y: auto;
   text-align: center;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 }
 .ModalTitle {
   font-size: 3rem;
@@ -699,6 +692,7 @@ html.mode-transition path {
   height: 100%;
   padding: 70px 50px 0px;
   text-align: center;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 }
 .ConfirmationModalButtonsDiv {
   margin-top: 36px;
@@ -797,7 +791,11 @@ html.mode-transition path {
 .SelectMenuContainer {
   position: fixed;
   z-index: 1300;
-  inset: 0px; /*risky, maybe position:absolute? top:0px; left:0px; width:100vw; height: 100vh;*/
+  /* inset: 0px; */
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
 }
 .SelectMenu {
   width: 250px;
@@ -971,6 +969,11 @@ html.mode-transition path {
   right: auto;
   transform: translateX(-50%);
 }
+.SnackbarFormOverride {
+  transform: none;
+  left: auto;
+  right: auto;
+}
 
 @media (min-width: 600px) {
   .OuterSnackbarDiv {
@@ -1101,4 +1104,56 @@ html.mode-transition path {
 }
 .Done {
   background-color: #83d630;
+}
+
+.SettingsContainer {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+.SettingsInfo {
+  color: var(--color);
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-size: 1.2em;
+}
+.SettingsInfo:not(:last-child) {
+  margin-bottom: 20px;
+}
+.HomeContainer {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+}
+.HomeContainer > img:not(:last-child) {
+  margin-bottom: 20px;
+}
+.HomeParagraph {
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  color: var(--color);
+  text-align: center;
+  font-size: 30px;
+}
+.HomeParagraph:not(last-child) {
+  margin-bottom: 20px;
+}
+.StatusPresentation {
+  color: white;
+  width: 240px;
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  text-transform: uppercase;
+  box-shadow: rgb(0 0 0 / 20%) 1.95px 1.95px 2.6px;
+  margin-bottom: 10px;
+}
+.StatusPresentation:last-of-type {
+  margin-bottom: 20px;
 }

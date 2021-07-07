@@ -21,14 +21,15 @@ function AuthProvider(props) {
       auth.login(form).then(({ authToken, user }) => {
         setToken(authToken);
         setUser(user);
-        history.push('/board');
+        history.push('/board', { loggedIn: true });
       }),
     [history],
   );
+
   const register = React.useCallback(
     (form) =>
       auth.register(form).then((user) => {
-        history.push('/board');
+        history.push('/login', { registered: true });
       }),
     [history],
   );
