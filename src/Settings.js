@@ -13,8 +13,6 @@ function Settings() {
     }
   }, [token, history]);
 
-  console.log('user', user);
-
   let date = new Date(user.createdAt).toLocaleDateString();
 
   return (

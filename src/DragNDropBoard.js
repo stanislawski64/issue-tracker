@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
 import AddIssueButton from './AddIssueButton';
 import Modal from './Modal';
+import { useState, useRef, useEffect } from 'react';
 
 function DragNDropBoard({
   data,
@@ -25,7 +25,7 @@ function DragNDropBoard({
   const newList = useRef();
 
   function handleDragStart(e, params) {
-    console.log('drag starting...', params);
+    // console.log('drag starting...', params);
     dragItem.current = params;
     dragNode.current = e.target;
     dragNode.current.addEventListener('dragend', handleDragEnd);
@@ -35,10 +35,10 @@ function DragNDropBoard({
   }
 
   function handleDragEnter(e, params) {
-    console.log('Entering drag...', params);
+    // console.log('Entering drag...', params);
     const currentItem = dragItem.current;
     if (e.target !== dragNode.current) {
-      console.log('target is not the same');
+      // console.log('target is not the same');
       setList((oldList) => {
         newList.current = JSON.parse(JSON.stringify(oldList));
         newList.current[params.grpI].items.splice(
@@ -56,7 +56,7 @@ function DragNDropBoard({
   }
 
   function handleDragEnd() {
-    console.log('Ending drag...');
+    // console.log('Ending drag...');
     setDragging(false);
     dragNode.current.removeEventListener('dragend', handleDragEnd);
     if (newList.current)

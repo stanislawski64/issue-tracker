@@ -12,7 +12,6 @@ function ToolbarSideMenuContainer() {
   }
 
   function toggleSideMenu() {
-    console.log(sidemenu.current.classList);
     sidemenu.current.classList.toggle('translated');
     sidemenu.current.classList.toggle('visible');
     sidemenu.current.classList.add('transition');

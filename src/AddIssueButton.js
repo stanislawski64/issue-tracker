@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { ReactComponent as PlusIcon } from './PlusIcon.svg';
+import { ReactComponent as PlusIcon } from './icons/PlusIcon.svg';
 
 function AddIssueButton({ triggerModalRender, defaultGroup }) {
   const PlusButton = useRef();

@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
 import AddIssueButton from './AddIssueButton';
 import Modal from './Modal';
+import { useState, useEffect } from 'react';
 
 function BacklogData({
   data,

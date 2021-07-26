@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
 import Modal from './Modal';
 import BacklogData from './BacklogData';
 import ConfirmationModal from './ConfirmationModal';
 import Snackbar from './Snackbar';
+import { useEffect, useState } from 'react';
 import { useAuth } from './auth-context';
 import { client } from './api-client';
 import { useHistory } from 'react-router-dom';
@@ -34,7 +34,7 @@ function Backlog() {
 
   useEffect(() => {
     client('issues', { token }).then(({ issues }) => {
-      console.log('issues', issues);
+      // console.log('issues', issues);
       setIssues(issues);
     });
   }, [token]);
@@ -70,7 +70,6 @@ function Backlog() {
   }, [issues]);
 
   function processIssueProps(index) {
-    console.log('displayed issue index', index);
     setDescription(issues[index].description);
     setTitle(issues[index].title);
     setIndex(index);
@@ -84,7 +83,6 @@ function Backlog() {
       token,
       method: 'DELETE',
     }).then(({ issue: removedIssue }) => {
-      console.log('removed issue', removedIssue);
       setIssues(issues.filter((item, i) => i !== index));
     });
     setSnackbar('Issue has been deleted.');

@@ -1,6 +1,6 @@
 import Button from './Button';
-import { ReactComponent as CloseIcon } from './CloseIcon.svg';
 import { useEffect, useRef } from 'react';
+import { ReactComponent as CloseIcon } from './icons/CloseIcon.svg';
 
 function ConfirmationModal({
   text,

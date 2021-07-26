@@ -1,8 +1,8 @@
 import SideMenuLink from './SideMenuLink';
-import { ReactComponent as BoardIcon } from './BoardIcon.svg';
-import { ReactComponent as BacklogIcon } from './BacklogIcon.svg';
-import { ReactComponent as SettingsIcon } from './SettingsIcon.svg';
 import { useLocation } from 'react-router-dom';
+import { ReactComponent as BoardIcon } from './icons/BoardIcon.svg';
+import { ReactComponent as BacklogIcon } from './icons/BacklogIcon.svg';
+import { ReactComponent as SettingsIcon } from './icons/SettingsIcon.svg';
 
 function SideMenuLinks() {
   const location = useLocation();

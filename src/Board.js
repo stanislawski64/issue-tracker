@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import Modal from './Modal';
 import DragNDropBoard from './DragNDropBoard';
 import ConfirmationModal from './ConfirmationModal';
 import Snackbar from './Snackbar';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useAuth } from './auth-context';
 import { client } from './api-client';
 import { useHistory } from 'react-router-dom';
@@ -44,7 +44,7 @@ function Board() {
 
   useEffect(() => {
     client('issues', { token }).then(({ issues }) => {
-      console.log('issues', issues);
+      // console.log('issues', issues);
       setIssues(issues);
     });
   }, [token]);
@@ -103,8 +103,6 @@ function Board() {
           status: newStatus,
           statusPosition: statusPosition++,
         },
-      }).then(({ issue: changedIssue }) => {
-        console.log('changed issue', changedIssue);
       });
       // } else {
       //   statusPosition++;
@@ -119,7 +117,6 @@ function Board() {
       token,
       method: 'DELETE',
     }).then(({ issue: removedIssue }) => {
-      console.log('removed issue', removedIssue);
       setIssues(issues.filter((item, i) => i !== index));
     });
     setSnackbar('Issue has been deleted.');
