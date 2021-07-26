@@ -1,8 +1,8 @@
-import { ReactComponent as CloseIcon } from './CloseIcon.svg';
-import { ReactComponent as DeleteIcon } from './DeleteIcon.svg';
 import ModalContent from './ModalContent';
 import AddIssueForm from './AddIssueForm';
 import { useEffect, useRef } from 'react';
+import { ReactComponent as CloseIcon } from './icons/CloseIcon.svg';
+import { ReactComponent as DeleteIcon } from './icons/DeleteIcon.svg';
 
 function Modal({
   title,

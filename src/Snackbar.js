@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { ReactComponent as SuccessIcon } from './SuccessIcon.svg';
-import { ReactComponent as CloseIcon } from './CloseIcon.svg';
-import { ReactComponent as ErrorIcon } from './ErrorIcon.svg';
+import { ReactComponent as SuccessIcon } from './icons/SuccessIcon.svg';
+import { ReactComponent as CloseIcon } from './icons/CloseIcon.svg';
+import { ReactComponent as ErrorIcon } from './icons/ErrorIcon.svg';
 
 function Snackbar({ type, setOpen, message, showFor, caseSpecificClass }) {
   const autoHide = useRef();

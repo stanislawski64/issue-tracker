@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from 'react';
 import SelectMenu from './SelectMenu';
-import { ReactComponent as SelectIcon } from './SelectIcon.svg';
+import { useEffect, useState, useRef } from 'react';
+import { ReactComponent as SelectIcon } from './icons/SelectIcon.svg';
 
 function Select({ defaultGroup, selectOptions, value, setValue }) {
   const [isExpanded, setExpanded] = useState();
@@ -52,7 +52,6 @@ function Select({ defaultGroup, selectOptions, value, setValue }) {
 
   function onResize() {
     let pos = outerselect.current.getBoundingClientRect();
-    console.log(pos);
     setTop(pos.top);
     setLeft(pos.left);
   }

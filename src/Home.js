@@ -1,5 +1,5 @@
-import reorder from './reorder.gif';
-import reassign from './reassign.gif';
+import reorder from './gifs/reorder.gif';
+import reassign from './gifs/reassign.gif';
 
 function Home() {
   return (

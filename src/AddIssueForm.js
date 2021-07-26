@@ -42,8 +42,6 @@ function AddIssueForm({
     }
     setError(localError);
 
-    console.log({ status, title, description });
-
     const defaultValues = {
       type: 'task',
       priority: '4',
@@ -63,7 +61,6 @@ function AddIssueForm({
         statusPosition: statusPosition++,
       },
     }).then(({ issue: newIssue }) => {
-      console.log('new issue', newIssue);
       setIssues([...issues, newIssue]);
     });
 
@@ -76,8 +73,6 @@ function AddIssueForm({
             data: {
               statusPosition: statusPosition++,
             },
-          }).then(({ issue: changedIssue }) => {
-            console.log('changed issue', changedIssue);
           });
         } else {
           statusPosition++;

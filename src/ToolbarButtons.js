@@ -1,7 +1,7 @@
 import ToolbarButton from './ToolbarButton';
-import { ReactComponent as MenuIcon } from './MenuIcon.svg';
-import { ReactComponent as AccountIcon } from './AccountIcon.svg';
-import { ReactComponent as NightModeIcon } from './NightModeIcon.svg';
+import { ReactComponent as MenuIcon } from './icons/MenuIcon.svg';
+import { ReactComponent as AccountIcon } from './icons/AccountIcon.svg';
+import { ReactComponent as NightModeIcon } from './icons/NightModeIcon.svg';
 
 function ToolbarButtons({ toggleSideMenu, toggleNightMode, setOpen }) {
   const ToolbarButtonsArray = [

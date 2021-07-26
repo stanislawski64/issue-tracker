@@ -1,6 +1,4 @@
-import './style.css';
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import './styles/style.css';
 import Backlog from './Backlog';
 import Board from './Board';
 import Settings from './Settings';
@@ -8,6 +6,7 @@ import Home from './Home';
 import Register from './Register';
 import Login from './Login';
 import ToolbarSideMenuContainer from './ToolbarSideMenuContainer';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { AuthProvider } from './auth-context';
 
 function App() {

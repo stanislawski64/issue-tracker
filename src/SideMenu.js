@@ -1,6 +1,6 @@
+import SideMenuLinks from './SideMenuLinks';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SideMenuLinks from './SideMenuLinks';
 import { useLocation } from 'react-router-dom';
 
 function SideMenu(props, ref) {
