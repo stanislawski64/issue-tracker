@@ -20,7 +20,7 @@ function Toolbar({ toggleSideMenu }) {
     };
   }, [open]);
 
-  const [theme, setTheme] = useState(localStorage.getItem('theme'));
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
   const timeout = useRef();
 
@@ -59,7 +59,11 @@ function Toolbar({ toggleSideMenu }) {
         {user ? (
           <>
             <div className="MenuItem">Hi, {user.name}</div>
-            <Link to="/login" className="MenuItem" onClick={logout}>
+            <Link
+              to={{ pathname: '/login', loggedOut: true }}
+              className="MenuItem"
+              onClick={logout}
+            >
               Log Out
             </Link>
           </>

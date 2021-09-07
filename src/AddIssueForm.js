@@ -19,7 +19,7 @@ function AddIssueForm({
 
   const { token } = useAuth();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     let localError = {};
     if (status === null || title.length === 0 || description.length === 0) {
@@ -42,12 +42,18 @@ function AddIssueForm({
     }
     setError(localError);
 
+    const { currentUser } = await client('currentUser', { token });
+    const userId = currentUser.id;
+    // .then(({ currentUser }) => {
+    // userId = currentUser.id;
+    // });
+
     const defaultValues = {
       type: 'task',
       priority: '4',
-      reporterId: 4,
+      reporterId: userId,
       projectId: 1,
-    }; // these values are never used or shown
+    }; // type is always task, priority isn't displayed anywhere, projectId is always 1
 
     let statusPosition = 0;
 
