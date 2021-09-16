@@ -43,7 +43,7 @@ function Board() {
   }, [location]);
 
   useEffect(() => {
-    client('issues', { token }).then(({ issues }) => {
+    client('issues', { token }).then(( issues ) => {
       // console.log('issues', issues);
       setIssues(issues);
     });
@@ -98,7 +98,7 @@ function Board() {
       // if (issue.statusPosition !== statusPosition) {
       client(`issues/${issue.id}`, {
         token,
-        method: 'PUT',
+        method: 'PATCH',
         data: {
           status: newStatus,
           statusPosition: statusPosition++,
@@ -116,7 +116,7 @@ function Board() {
     client(`issues/${issues[index].id}`, {
       token,
       method: 'DELETE',
-    }).then(({ issue: removedIssue }) => {
+    }).then((removedIssue) => {
       setIssues(issues.filter((item, i) => i !== index));
     });
     setSnackbar('Issue has been deleted.');

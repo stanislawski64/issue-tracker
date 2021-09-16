@@ -33,7 +33,7 @@ function Backlog() {
   const [snackbar, setSnackbar] = useState(false);
 
   useEffect(() => {
-    client('issues', { token }).then(({ issues }) => {
+    client('issues', { token }).then(( issues ) => {
       // console.log('issues', issues);
       setIssues(issues);
     });
@@ -82,7 +82,7 @@ function Backlog() {
     client(`issues/${issues[index].id}`, {
       token,
       method: 'DELETE',
-    }).then(({ issue: removedIssue }) => {
+    }).then((removedIssue) => {
       setIssues(issues.filter((item, i) => i !== index));
     });
     setSnackbar('Issue has been deleted.');

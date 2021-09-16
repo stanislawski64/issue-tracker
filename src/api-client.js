@@ -16,14 +16,19 @@ async function client(
     ...customConfig,
   };
 
+  const url = `${apiURL}/${endpoint}`
   return window
-    .fetch(`${apiURL}/${endpoint}`, config)
+    .fetch(url, config)
     .then(async (response) => {
+      // console.log('**************');
+      // console.log('url', url);
       if (response.status === 401) {
         await auth.logout();
         return Promise.reject({ message: 'Please re-authenticate.' });
       }
       const data = await response.json();
+      // console.log('data', data);
+      // console.log('**************');
       if (response.ok) {
         return data;
       } else {

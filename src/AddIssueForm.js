@@ -60,7 +60,7 @@ function AddIssueForm({
         ...defaultValues,
         statusPosition: statusPosition++,
       },
-    }).then(({ issue: newIssue }) => {
+    }).then((newIssue) => {
       setIssues([...issues, newIssue]);
     });
 
@@ -69,7 +69,7 @@ function AddIssueForm({
         if (issue.statusPosition !== statusPosition) {
           client(`issues/${issue.id}`, {
             token,
-            method: 'PUT',
+            method: 'PATCH',
             data: {
               statusPosition: statusPosition++,
             },
