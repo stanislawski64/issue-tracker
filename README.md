@@ -9,19 +9,21 @@ This project is aimed to showcase a sample issue tracker application based on Cr
 - Custom components with CSS variables 🦄
 - Night Mode with transitions 🌙
 
+## App can be seen hosted here
+
+https://zoomiex.usermd.net/
+
 ## Backend Setup
 
-Install Postgresql version “10-15” on your machine. During installation, choose user ‘root’ and set a password
+Install Postgresql version “10-15” on your machine. During installation, choose user and set a password
 
-Fire up pgAdmin application after you’re done, and add a database called ‘jira_development’
+Fire up pgAdmin application after you’re done, and add a database called ‘jira_dev’
 
 Clone repository https://github.com/slawojstanislawski/gira-api and navigate to api directory, perform npm install.
 
-Modify .env file - set database password to the one you chose during installation of Postgres, the rest should likely stay the same.
+Modify .env file - set database user and password to the ones you chose during installation of Postgres, the rest should likely stay the same.
 
 Execute `npm start` in the api folder
-
-Install Postman application on your machine, add a collection ‘Gira’, set up ‘http://localhost:3001/guest/authenticate’ request, get a bearer token with this, set it as collection’s authentication and click ‘Save’, add ‘http://localhost:3001/issues’ request and test if it works.
 
 ## Frontend Setup
 
