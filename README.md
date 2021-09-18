@@ -19,7 +19,7 @@ Install Postgresql version “10-15” on your machine. During installation, cho
 
 Fire up pgAdmin application after you’re done, and add a database called ‘jira_dev’
 
-Clone repository https://github.com/slawojstanislawski/gira-api and navigate to api directory, perform npm install.
+Clone repository https://github.com/slawojstanislawski/gira-api and navigate to api directory, perform `npm install`.
 
 Modify .env file - set database user and password to the ones you chose during installation of Postgres, the rest should likely stay the same.
 
