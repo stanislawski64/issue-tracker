@@ -7,7 +7,7 @@ import { useAuth } from './auth-context';
 import { useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
-function Login() {
+function Login(props) {
   const { token } = useAuth();
 
   const history = useHistory();
@@ -29,6 +29,13 @@ function Login() {
   const [snackbar, setSnackbar] = useState(false);
 
   const [snackbarType, setSnackbarType] = useState('error');
+
+  useEffect(() => {
+    if (props.location.loggedOut) {
+      setSnackbar('You have successfully logged out.');
+      setSnackbarType('success');
+    }
+  }, [props.location.loggedOut]);
 
   useEffect(() => {
     if (!location.state) return;
